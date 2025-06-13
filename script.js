@@ -24,7 +24,6 @@ function displayBooks() {
         const row = document.createElement("tr");
         row.dataset.id= book.id;
         row.innerHTML=`
-        <td style="width:24ch">${book.id}</td>
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.pages}</td>
@@ -74,7 +73,21 @@ add.addEventListener('click',() =>{
             })
         })
         
-    } else{
+    } else if(isNaN(pages.value) || pages.value.trim() === ""){
+        buttons.forEach(btn=>btn.remove());
+        const warn='Please Use Numbers and not Letters in the Number of Pages Field';
+        const lastRow=document.querySelector('.last');
+        const warndiv=document.createElement('span');
+        warndiv.textContent=warn;
+        warndiv.className='warn';
+        lastRow.appendChild(warndiv);
+        pages.addEventListener('focus',() => {
+            warndiv.remove()
+            buttons.forEach(btn => lastRow.appendChild(btn));
+        })
+        
+    }
+    else{
     addBookToLibrary(name.value,author.value,pages.value,read.value);
     displayBooks();
     dialog.close();
