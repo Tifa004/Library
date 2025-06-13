@@ -35,6 +35,12 @@ th, td {
   border-bottom: 1px solid #ccc;
 }
 
+#tableBody tr td:nth-child(6) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 #tableBody tr td:nth-child(6) button {
     background-color: #f0f4f8;
     border: 1px solid #000;

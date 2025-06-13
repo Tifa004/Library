@@ -10,6 +10,9 @@ function books(title, author, pages,isRead) {
     //     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}`;
     // };
 }
+books.prototype.toggleReadStatus = function() {
+    this.isRead = this.isRead === "Read" ? "Not Read" : "Read";
+};
 function addBookToLibrary(title, author, pages, isRead) {
     const newBook = new books(title, author, pages, isRead);
     myLibrary.push(newBook);
@@ -26,7 +29,10 @@ function displayBooks() {
         <td>${book.author}</td>
         <td>${book.pages}</td>
         <td>${book.isRead=="Read"?"✔️":"❌"}</td>
-        <td><button class='remove'>Remove</button></td>
+        <td>
+            <button class='remove'>Remove</button>
+            <button class='toggle'>Toggle&nbsp;Read</button>
+        </td>
         `;
         tbody.appendChild(row);
     })
@@ -81,17 +87,26 @@ close.addEventListener('click',()=>{
 const tbody=document.getElementById('tableBody');
 
 
-tbody.addEventListener('click',function(e) {
-    if (e.target.classList.contains('remove')){
-        const row=e.target.closest('tr');
-        const bookId = row.dataset.id;
-        const index = myLibrary.findIndex(book => book.id === bookId);
+tbody.addEventListener('click', function(e) {
+    const row = e.target.closest('tr');
+    const bookId = row?.dataset?.id;
+
+    if (!bookId) return;
+
+    const index = myLibrary.findIndex(book => book.id === bookId);
+    const book = myLibrary[index];
+
+    if (e.target.classList.contains('remove')) {
         if (index !== -1) {
             myLibrary.splice(index, 1);
+            row.remove();
         }
-        row.remove();    
-}
-});
+    }
 
+    if (e.target.classList.contains('toggle')) {
+        book.toggleReadStatus();
+        displayBooks(); 
+    }
+});
 
 displayBooks();
