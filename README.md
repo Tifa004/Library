@@ -20,7 +20,7 @@ A simple and elegant **book tracking web app** where you can add, remove, and up
 
 - Semantic HTML with a native `<dialog>` element for the book form.
 - Form validation using the `required` attribute.
-  
+
 ### 🔹 CSS
 
 - **Flexbox layout** for form responsiveness.
@@ -29,11 +29,20 @@ A simple and elegant **book tracking web app** where you can add, remove, and up
 
 ### 🔹 JavaScript
 
-- **Object constructor** (`books`) with `crypto.randomUUID()` for unique IDs.
-- **Prototype method** `toggleReadStatus()` to handle logic cleanly.
+- **ES6 `class Book`** with `crypto.randomUUID()` for unique IDs.
+- **Prototype method** `toggleReadStatus()` to encapsulate logic.
 - **Dynamic DOM manipulation** to add, display, and remove books.
-- **Event delegation** on the table body (`tbody`) for performance.
-- Graceful handling of missing inputs with warning messages.
+- **Event delegation** on the table body (`<tbody>`) for performance.
+- Graceful handling of invalid input with clear warning messages.
 
 ---
 
+## 🔄 Updates
+
+- ✅ Migrated from constructor function to ES6 `class Book`.
+- ✅ Stored `isRead` as a boolean instead of a string for logical clarity.
+- ✅ Added stricter validation for the "pages" field using `Number.isInteger()` and positive integer checks.
+- ✅ Improved warning handling: reusable `clearWarnings()` function and multiple-focus safety.
+- ✅ Used consistent event delegation to simplify DOM event logic.
+- ✅ Fully modular code structure separating logic (data) and view (DOM).
+- ✅ Cleaned up and removed repeated logic for better maintainability.
