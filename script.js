@@ -65,68 +65,26 @@ addBtn.addEventListener('click', (event) => {
   const pages = document.getElementById('pages');
   const read = document.getElementById('read');
   const inputs = [name, author, pages, read];
-  const buttons = document.querySelectorAll('.row button');
-  const lastRow = document.querySelector('.last');
 
-  const clearWarnings = () => {
-    const warn = lastRow.querySelector('.warn');
-    if (warn) warn.remove();
-    buttons.forEach(btn => lastRow.appendChild(btn));
-  };
+  // Clear custom messages before validating
+  inputs.forEach(input => input.setCustomValidity(""));
 
-  // Attach clearWarnings every time so warnings always get cleared
-  inputs.forEach(input => {
-    input.addEventListener('focus', clearWarnings);
-  });
-
-  // Validate empty fields
-  if (name.value === '' || author.value === '' || pages.value === '' || read.value === '') {
-    buttons.forEach(btn => btn.remove());
-    const warnDiv = document.createElement('span');
-    warnDiv.textContent = 'Please fill in all of the fields';
-    warnDiv.className = 'warn';
-    lastRow.appendChild(warnDiv);
-    return;
+  // Validate each input using HTML5 constraint validation
+  for (let input of inputs) {
+    if (!input.checkValidity()) {
+      input.reportValidity(); // Show built-in browser tooltip
+      return; // Stop if any input is invalid
+    }
   }
 
-  // Validate pages
   const pageCount = Number(pages.value);
-  if (!Number.isInteger(pageCount) || pageCount <= 0) {
-    buttons.forEach(btn => btn.remove());
-    const warnDiv = document.createElement('span');
-    warnDiv.textContent = 'Please enter a valid positive whole number for pages.';
-    warnDiv.className = 'warn';
-    lastRow.appendChild(warnDiv);
-    return;
-  }
 
-  // Add book
   addBookToLibrary(name.value, author.value, pageCount, read.value);
   displayBooks();
   dialog.close();
+
+  // Clear input values after submission
   inputs.forEach(input => input.value = '');
-});
-
-const tbody = document.getElementById('tableBody');
-
-tbody.addEventListener('click', function (e) {
-  const row = e.target.closest('tr');
-  const bookId = row?.dataset?.id;
-  if (!bookId) return;
-
-  const index = myLibrary.findIndex(book => book.id === bookId);
-  const book = myLibrary[index];
-  if (!book) return;
-
-  if (e.target.classList.contains('remove')) {
-    myLibrary.splice(index, 1);
-    row.remove();
-  }
-
-  if (e.target.classList.contains('toggle')) {
-    book.toggleReadStatus();
-    displayBooks();
-  }
 });
 
 displayBooks();
